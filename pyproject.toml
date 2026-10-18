@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shellparity"
+dynamic = ["version"]
+description = "See what your terminal shell sees vs what an AI agent's shell sees: PATH, tool versions, proxies, locale, SSH and git, with the exact fix."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [{ name = "Mohammadreza Zare", email = "mrzroot@users.noreply.github.com" }]
+keywords = ["shell", "environment", "ai-agents", "dotfiles", "diagnostics", "path", "zshrc", "bashrc", "devtools"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: MacOS",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development",
+  "Topic :: System :: Shells",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/mrzroot/shellparity"
+Issues = "https://github.com/mrzroot/shellparity/issues"
+Changelog = "https://github.com/mrzroot/shellparity/blob/main/CHANGELOG.md"
+
+[project.scripts]
+shellparity = "shellparity.cli:main"
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[tool.setuptools]
+packages = ["shellparity"]
+
+[tool.setuptools.dynamic]
+version = { attr = "shellparity.__version__" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,159 @@
+$ shellparity --demo
+# generated 2026-10-18T14:04Z on Linux, bash 5.2, Python 3.13 (a real run of the real tool; the temp home directory is shown as /home/demo)
+DEMO real bash against a temporary fake HOME (shown as /home/demo); your own dotfiles were not read
+
+shellparity 0.1.0  ·  your terminal vs the agent's shell
+  shell    bash 5.2.37 (/usr/bin/bash)
+  human    bash -l -i           login + interactive, on a pseudo-terminal (what your terminal app starts)
+  agent    bash -c              non-login, non-interactive (`-c`, what most agents run)
+
+  3 errors  ·  6 warnings  ·  5 notes   (3 tools resolve identically)
+
+  Where the fixes go
+    ~/.bash_env: non-interactive bash reads nothing except the file named by $BASH_ENV; set
+      BASH_ENV=$HOME/.bash_env in the environment that launches the agent.
+    Alternative: start the agent's shell as `bash -l -c ...` (login mode). It already sees the fix for 1
+      finding below, but it runs your login startup files on every command (slower, may print banners).
+    Alternative: start the agent's shell as `bash -i -c ...` (interactive mode). It already sees the fix
+      for 9 findings below, but it runs your interactive startup files on every command (slower, may
+      print banners).
+
+ ✖ ERROR  #1 `node` resolves to a different version for the agent
+      human  /home/demo/.nvm/versions/node/v22.4.0/bin/node  v22.4.0
+      agent  /usr/bin/node  v20.19.2
+      why    Different binary first on PATH.
+      found  ~/.bashrc:7: export NVM_DIR="$HOME/.nvm"  (below the interactive-only guard at line 2)
+      found  ~/.bashrc:8: export PATH="$HOME/.nvm/versions/node/v22.4.0/bin:$HOME/.local/bin:$PATH"
+             (below the interactive-only guard at line 2)
+      fix    nvm is a shell function loaded from nvm.sh; agents never load it, so only the resolved bin
+             directory can be pinned. Re-pin after `nvm use`/`nvm alias default`.
+             Add to ~/.bash_env:
+                 export PATH="$HOME/.nvm/versions/node/v22.4.0/bin:$PATH"
+
+ ✖ ERROR  #2 `npm` is not found in the agent shell
+      human  /home/demo/.nvm/versions/node/v22.4.0/bin/npm (10.8.1)
+      agent  command not found
+      why    `command -v npm` finds it in your terminal only.
+      found  ~/.bashrc:7: export NVM_DIR="$HOME/.nvm"  (below the interactive-only guard at line 2)
+      found  ~/.bashrc:8: export PATH="$HOME/.nvm/versions/node/v22.4.0/bin:$HOME/.local/bin:$PATH"
+             (below the interactive-only guard at line 2)
+      fix    Same lines as finding #1.
+
+ ✖ ERROR  #3 the agent shell is not UTF-8
+      human  LANG=C.UTF-8; charmap=UTF-8; UTF-8 ok
+      agent  LANG=C; charmap=ANSI_X3.4-1968; NOT UTF-8
+      why    Non-ASCII text (Persian, emoji, accents) in file names, git output and tool output can be
+             mangled or fail with encoding errors.
+      found  ~/.bashrc:13: export LANG=C.UTF-8  (below the interactive-only guard at line 2)
+      fix    Add to ~/.bash_env:
+                 export LANG=C.UTF-8
+
+ ⚠ WARN   #4 5 PATH directories are only in the human shell
+      human  7 entries
+      agent  2 entries
+      why    Missing for the agent: /home/demo/.nvm/versions/node/v22.4.0/bin, /home/demo/.local/bin,
+             /usr/local/bin, /usr/local/games, /usr/games
+      found  ~/.bashrc:8: export PATH="$HOME/.nvm/versions/node/v22.4.0/bin:$HOME/.local/bin:$PATH"
+             (below the interactive-only guard at line 2)
+      fix    Add to ~/.bash_env:
+                 export PATH="$HOME/.nvm/versions/node/v22.4.0/bin:$HOME/.local/bin:/usr/local/bin:/usr/local/games:/usr/games:$PATH"
+
+ ⚠ WARN   #5 proxy variables set only in the human shell: HTTPS_PROXY, no_proxy
+      human  HTTPS_PROXY=http://***:***@127.0.0.1:10809; no_proxy=localhost,127.0.0.1
+      agent  not set
+      why    Network tools run by the agent connect directly (or time out) instead of using your proxy.
+      found  ~/.bashrc:10: export HTTPS_PROXY="http://***:***@127.0.0.1:10809"  (below the
+             interactive-only guard at line 2)
+      found  ~/.bashrc:11: export no_proxy="localhost,127.0.0.1"  (below the interactive-only guard at
+             line 2)
+      fix    Add to ~/.bash_env:
+                 # HTTPS_PROXY contains credentials: copy the real line from ~/.bashrc:10
+                 export no_proxy=localhost,127.0.0.1
+
+ ⚠ WARN   #6 SSH_AUTH_SOCK is missing in the agent shell
+      human  /home/demo/.ssh/agent.sock
+      agent  not set
+      why    git/ssh over SSH cannot use your keys; it fails or waits for a passphrase that nobody can
+             type.
+      found  ~/.bashrc:16: export SSH_AUTH_SOCK="$HOME/.ssh/agent.sock"  (below the interactive-only
+             guard at line 2)
+      fix    Add to ~/.bash_env:
+                 # only if the socket path is stable (systemd, gnome-keyring, launchd):
+                 export SSH_AUTH_SOCK=/home/demo/.ssh/agent.sock
+
+ ⚠ WARN   #7 git commit signing is on, but the agent shell has no TTY and no GPG_TTY
+      human  GPG_TTY=/dev/pts/1
+      agent  GPG_TTY unset, stdin is not a tty
+      why    gpg's pinentry cannot ask for the passphrase, so `git commit` can fail with 'gpg failed to
+             sign the data' unless gpg-agent already has it cached.
+      found  ~/.bashrc:17: export GPG_TTY=$(tty 2>/dev/null)  (below the interactive-only guard at line
+             2)
+      fix    Either let the agent commit unsigned: `git -c commit.gpgsign=false commit ...`,
+             or switch to SSH signing (`git config --global gpg.format ssh`) with an ssh-agent,
+             or pre-cache the passphrase in gpg-agent (gpg-preset-passphrase).
+
+ ⚠ WARN   #8 `NVM_DIR` is set only in the human shell
+      human  /home/demo/.nvm
+      agent  not set
+      found  ~/.bashrc:7: export NVM_DIR="$HOME/.nvm"  (below the interactive-only guard at line 2)
+      fix    Add to ~/.bash_env:
+                 export NVM_DIR=/home/demo/.nvm
+
+ ⚠ WARN   #9 1 secret-looking variable does exist only in the human shell
+      human  OPENAI_API_KEY
+      agent  not set
+      why    Only the names are compared; values are never read or stored. Agents cannot call APIs that
+             need these keys.
+      found  ~/.bashrc:15: export OPENAI_API_KEY=<redacted>  (below the interactive-only guard at line
+             2)
+      fix    Give these to the agent explicitly (its settings or a secrets manager), or `export
+             NAME=...` in the file named above. Never commit them.
+
+ ℹ NOTE   #10 only `HTTPS_PROXY` is set in the human shell (not `https_proxy`)
+      why    Tools disagree on which spelling they read (curl, for example, honours lowercase http_proxy
+             only). Setting both is safest.
+      found  ~/.bashrc:10: export HTTPS_PROXY="http://***:***@127.0.0.1:10809"  (below the
+             interactive-only guard at line 2)
+
+ ℹ NOTE   #11 `EDITOR` is set only in the human shell
+      human  vim
+      agent  not set
+
+ ℹ NOTE   #12 stdin is a TTY in the human shell but not in the agent shell
+      human  tty
+      agent  no tty
+      why    Expected for agents. Commands that prompt (git credentials, ssh, sudo, installers) cannot
+             be answered; pass non-interactive flags.
+
+ ℹ NOTE   #13 TERM is unset in the agent shell
+      human  TERM=xterm-256color
+      agent  TERM=unset
+      why    Colour, `tput`, `less` and some CLIs behave differently without a terminal type.
+
+ ℹ NOTE   #14 1 alias exists in the human shell, none in the agent shell
+      why    Aliases like `ll`, `gs` or `python=python3` do not work for agents; use real commands or
+             scripts on PATH.
+
+  What each startup mode sees
+  mode         ok   PATH dirs  tools  proxy  UTF-8  SSH sock  aliases
+  -----------  ---  ---------  -----  -----  -----  --------  -------
+  human        yes  7          5      1      yes    yes       1
+  plain        yes  2          4      -      NO     -         0
+  login        yes  5          5      -      NO     -         0
+  interactive  yes  4          5      1      yes    yes       1
+  bare         yes  7          5      -      NO     -         0
+
+  Startup files read by bash
+    /etc/profile     yes  login shells
+    ~/.bash_profile  yes  login shells (first of the three that exists)
+    ~/.bash_login    no   login shells (only if no ~/.bash_profile)
+    ~/.profile       no   login shells (only if no ~/.bash_profile or ~/.bash_login)
+    ~/.bashrc        yes  interactive non-login shells; login shells only if a profile file sources it  interactive-only guard at line 2
+    $BASH_ENV        n/a  non-interactive shells, only if BASH_ENV is set
+    Note: ~/.bashrc returns early for non-interactive shells (line 2). Anything below that line is
+      skipped whenever the file is sourced non-interactively (BASH_ENV, scripts, ssh commands), so do
+      not point BASH_ENV at it; use a separate file.
+
+  Nothing was changed on disk. Fixes above are suggestions; --write-snippet FILE saves the export lines.
+$ echo $?
+0
