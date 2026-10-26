@@ -4,13 +4,11 @@ import json
 import os
 import shutil
 import subprocess
-import sys
 
 import pytest
 
-from conftest import (analyze_home, finding_ids, get, have, posix_only, requires_bash,
+from conftest import (analyze_home, get, have, posix_only, requires_bash,
                       requires_sh, requires_zsh, write)
-from shellparity import core
 from shellparity.probe import build_probe
 from shellparity.render import render_json, render_text
 from shellparity.runner import run_modes

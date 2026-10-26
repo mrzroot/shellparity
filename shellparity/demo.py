@@ -16,9 +16,8 @@ import socket
 import stat
 import sys
 import tempfile
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Optional, Tuple
 
-from .advise import AdviceContext
 from .core import analyze_snapshots
 from .runner import run_modes
 from .snapshot import snapshot_from_records

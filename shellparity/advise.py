@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 
 from .compare import Finding
-from .snapshot import mask_text, redact_line
+from .snapshot import redact_line
 
 # Which modes read which files (documented behaviour of each shell).
 STARTUP_FILES: Dict[str, List[Tuple[str, List[str], str]]] = {

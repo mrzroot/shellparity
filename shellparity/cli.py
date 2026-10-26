@@ -13,7 +13,7 @@ from .core import analyze
 from .demo import run_demo
 from .render import (render_json, render_markdown, render_snippet, render_text,
                      stdout_supports_unicode)
-from .runner import MODE_HELP, SUPPORTED_SHELLS, available_shells, find_shell, shell_basename
+from .runner import SUPPORTED_SHELLS, available_shells, find_shell, shell_basename
 
 EXIT_OK, EXIT_FINDINGS, EXIT_ERROR = 0, 1, 2
 

@@ -3,7 +3,6 @@ import os
 import subprocess
 import sys
 
-import pytest
 
 from conftest import posix_only, requires_bash
 from shellparity import __version__

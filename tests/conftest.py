@@ -8,7 +8,6 @@ import pytest
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from shellparity import core  # noqa: E402
-from shellparity.runner import run_modes  # noqa: E402
 
 
 def have(shell):

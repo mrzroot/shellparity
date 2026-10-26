@@ -1,6 +1,4 @@
-import os
 
-import pytest
 
 from shellparity.advise import (AdviceContext, RcFile, advise, find_guard, home_var,
                                 locate, manager_for, manager_lines, placement, scan_rc_files,
