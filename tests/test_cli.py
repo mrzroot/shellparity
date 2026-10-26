@@ -4,7 +4,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 from conftest import posix_only, requires_bash
 from shellparity import __version__
 from shellparity.cli import main
