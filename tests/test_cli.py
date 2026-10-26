@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 import sys
+from pathlib import Path
 
 
 from conftest import posix_only, requires_bash
@@ -35,7 +36,7 @@ def test_version_and_help():
 def test_scripted_demo_matches_golden_file():
     r = run_cli("--demo", "scripted")
     assert r.returncode == 0
-    assert r.stdout == open(GOLDEN, encoding="utf-8").read()
+    assert r.stdout == Path(GOLDEN).read_text(encoding="utf-8")
 
 
 def test_scripted_demo_has_the_expected_story():

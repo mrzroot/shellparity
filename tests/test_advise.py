@@ -127,7 +127,7 @@ def test_credentials_are_never_emitted_in_fix_lines(tmp_path):
     fs = compare(h, snap())
     ctx = _ctx(tmp_path, rc=[rc], snaps={"human": h, "plain": snap()})
     advise(fs, ctx)
-    text = "\n".join(l for f in fs for l in f.fix + f.where)
+    text = "\n".join(line for f in fs for line in f.fix + f.where)
     assert "pw" not in text and "user:" not in text
     assert "contains credentials" in text
 
