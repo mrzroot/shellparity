@@ -4,7 +4,7 @@
 
 **See what your terminal sees vs what an AI agent's shell sees, and get the exact fix.**
 
-[![CI](https://github.com/mrzroot/shellparity/actions/workflows/ci.yml/badge.svg)](https://github.com/mrzroot/shellparity/actions/workflows/ci.yml)
+
 ![python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![deps](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![license](https://img.shields.io/badge/license-MIT-lightgrey)

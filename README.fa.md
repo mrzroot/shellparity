@@ -6,7 +6,7 @@
 
 **ببین ترمینال خودت چی می‌بینه و شل ایجنت هوش مصنوعی چی؛ و راه‌حل دقیقش رو بگیر.**
 
-[![CI](https://github.com/mrzroot/shellparity/actions/workflows/ci.yml/badge.svg)](https://github.com/mrzroot/shellparity/actions/workflows/ci.yml)
+
 ![python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![deps](https://img.shields.io/badge/dependencies-none-brightgreen)
 ![license](https://img.shields.io/badge/license-MIT-lightgrey)
