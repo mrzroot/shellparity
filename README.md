@@ -1,3 +1,15 @@
+<p align="center"><img src=".github/assets/banner.svg" alt="shellparity: Your terminal vs your AI agent's shell, and the exact fix" width="100%"></p>
+
+<p align="center">
+  <a href="https://github.com/mrzroot/shellparity/releases"><img alt="Latest release" src="https://img.shields.io/github/v/release/mrzroot/shellparity?style=flat-square"></a>
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/mrzroot/shellparity?style=flat-square"></a>
+  <img alt="Python 3.9+" src="https://img.shields.io/badge/python-3.9%2B-3776ab?style=flat-square">
+  <img alt="No dependencies" src="https://img.shields.io/badge/dependencies-none-brightgreen?style=flat-square">
+  <a href="https://github.com/mrzroot/shellparity/commits"><img alt="Last commit" src="https://img.shields.io/github/last-commit/mrzroot/shellparity?style=flat-square"></a>
+</p>
+
+<p align="center"><a href="https://mrzroot.github.io/shellparity/">Website</a> · <a href="README.fa.md">فارسی</a> · <a href="CHANGELOG.md">Changelog</a> · <a href="CONTRIBUTING.md">Contributing</a></p>
+
 <div align="center">
 
 # shellparity
