@@ -230,3 +230,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and [CHANGELOG.md](CHANGELOG.md).
 ## License
 
 MIT © 2026 Mohammadreza Zare ([@mrzroot](https://github.com/mrzroot))
+
+## Contributing
+
+Bug reports and ideas are welcome: open an [issue](../../issues/new/choose) (the templates ask for the steps and version we need). For code, read [CONTRIBUTING.md](CONTRIBUTING.md) first, keep each pull request to one change, and run the tests before you open it.
